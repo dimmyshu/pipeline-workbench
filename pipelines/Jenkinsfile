@@ -8,7 +8,8 @@ pipeline {
         }
         stage('Test #2'){
             steps{
-               sh 'echo "Fail!"; exit 1'
+               sh 'echo "I\'m previously Fail!"'
+               sh 'echo now success'
             }
         }
     }
