@@ -5,8 +5,6 @@ services:
     image: docker:dind
     networks:
       - jenkins
-    external_links:
-      - "docker"
     environment:
       - DOCKER_CERT_PATH=/certs
     volumes:
@@ -21,9 +19,11 @@ services:
     environment:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
-      - DOCKER_HOST=tcp://jenkins-docker:2376
+      - DOCKER_HOST=tcp://docker:2376
     networks:
       - jenkins
+    links:
+      - jenkins-docker:docker
     volumes:
       - jenkins-cert:/certs/client:rw
       - jenkins-data:/var/jenkins_home:rw
