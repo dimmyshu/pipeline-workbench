@@ -1,11 +1,27 @@
 version: "3.9"
 
 services:
+  jenkins-docker:
+    image: docker:dind
+    networks:
+      - jenkins
+    external_links:
+      - "docker"
+    environment:
+      - DOCKER_CERT_PATH=/certs
+    volumes:
+      - jenkins-cert:/certs/client:rw
+      - jenkins-data:/var/jenkins_home:rw
+    ports:
+      - 2376:2376
+    privileged: true
+
   jenkins-blueocean:
     image: jenkins-blueocean:2.319.2-1
     environment:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
+      - DOCKER_HOST=tcp://jenkins-docker:2376
     networks:
       - jenkins
     volumes:
@@ -14,10 +30,12 @@ services:
     ports:
       - 8081:8080
       - 50000:50000
+    depends_on:
+      - jenkins-docker
 
 networks:
   jenkins:
-    driver: bridge
+    driver: bridge    
 
 volumes:
   jenkins-cert:
