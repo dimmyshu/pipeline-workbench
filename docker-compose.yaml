@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  jenkins-blueocean:
+    image: jenkins-blueocean:2.319.2-1
+    environment:
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    networks:
+      - jenkins
+    volumes:
+      - jenkins-cert:/certs/client:rw
+      - jenkins-data:/var/jenkins_home:rw
+    ports:
+      - 8081:8080
+      - 50000:50000
+
+networks:
+  jenkins:
+    driver: bridge
+
+volumes:
+  jenkins-cert:
+    driver: local
+  jenkins-data:
+    driver: local 
+
+
