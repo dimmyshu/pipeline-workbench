@@ -6,9 +6,9 @@ pipeline {
                 sh 'echo "Fail!";
             }
         }
-        stage("Test #2"){
+        stage('Test #2'){
             steps{
-                echo "====++++executing Test #2++++===="
+                echo '====++++executing Test #2++++===='
             }
         }
     }
