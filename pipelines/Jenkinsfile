@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Test #1') {
             steps {
-                sh 'echo "Fail!";
+                sh 'echo Success";
             }
         }
         stage('Test #2'){
             steps{
-                echo '====++++executing Test #2++++===='
+               sh 'echo "Fail!"; exit 1'
             }
         }
     }
