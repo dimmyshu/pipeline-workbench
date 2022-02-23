@@ -17,11 +17,11 @@ jobs:
           echo "Found valid version format in tag!"
           echo "Full version: ${{ steps.version.outputs.full }}"
           echo "Major version: ${{ steps.version.outputs.major }}"
-        if: steps.version.outputs.is_valid == 'true'
+        if: steps.version.outputs.is_stable == 'true'
 
       - name: Version Is Invalid
         shell: bash
         run: |
           echo Tag ${GITHUB_REF##*/} is not valid
           exit 1
-        if: steps.version.outputs.is_valid == 'false'
+        if: steps.version.outputs.is_stable == 'false'
