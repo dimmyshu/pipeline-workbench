@@ -4,24 +4,20 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: nowsprinting/check-version-format-action@v1
-        id: version
+   test_semver_parser:
+     runs-on: ubuntu_latest
+     steps:
+      - name: Parse semver string
+        id: semver_parser 
+        uses: booxmedialtd/ws-action-parse-semver@v1
         with:
-          prefix: 'v'
-
-      - name: Version tag only step
+          input_string: '${{ GITHUB_REF }}'
+          version_extractor_regex: '\/v(.*)$'
+      - name: Use parsed semver
         run: |
-          echo "Found valid version format in tag!"
-          echo "Full version: ${{ steps.version.outputs.full }}"
-          echo "Major version: ${{ steps.version.outputs.major }}"
-        if: steps.version.outputs.is_stable == 'true'
-
-      - name: Version Is Invalid
-        shell: bash
-        run: |
-          echo Tag ${GITHUB_REF##*/} is not valid
-          exit 1
-        if: steps.version.outputs.is_stable == 'false'
+            echo "v${{ steps.semver_parser.outputs.major }}"
+            echo "v${{ steps.semver_parser.outputs.minor }}"
+            echo "v${{ steps.semver_parser.outputs.patch }}"
+            echo "v${{ steps.semver_parser.outputs.prerelease }}"
+            echo "v${{ steps.semver_parser.outputs.build }}"
+            echo "v${{ steps.semver_parser.outputs.fullversion }}"
