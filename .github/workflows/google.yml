@@ -1,0 +1,25 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nowsprinting/check-version-format-action@v1
+        id: version
+        with:
+          prefix: 'v'
+
+      - name: Version tag only step
+        run: |
+          echo "Found valid version format in tag!"
+          echo "Full version: ${{ steps.version.outputs.full }}"
+          echo "Major version: ${{ steps.version.outputs.major }}"
+        if: steps.version.outputs.is_valid == 'true'
+
+      - name: Stable version only step
+        run: |
+          echo "Found stable version in tag!"
+        if: steps.version.outputs.is_stable == 'true'
