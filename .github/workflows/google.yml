@@ -19,7 +19,9 @@ jobs:
           echo "Major version: ${{ steps.version.outputs.major }}"
         if: steps.version.outputs.is_valid == 'true'
 
-      - name: Stable version only step
+      - name: Version Is Invalid
+        shell: bash
         run: |
-          echo "Found stable version in tag!"
-        if: steps.version.outputs.is_stable == 'true'
+          echo Tag ${GITHUB_REF##*/} is not valid
+          exit 1
+        if: steps.version.outputs.is_valid == 'false'
